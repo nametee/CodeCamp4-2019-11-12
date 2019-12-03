@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Get Api</title> 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h3>Your Position</h3>
+    <p id="position"></p>
+    <hr>
+    <h3>Your Weather</h3>
+    <p id="weather"></p>
+    <script> 
+        let lat , long;
+        let key = '2d3db2ae181d1563f927282faacd6e17';
+        const getVal = ()=> { 
+            navigator.geolocation.getCurrentPosition((position)=>{
+                lat = position.coords.latitude;
+                long = position.coords.longitude;
+                document.getElementById('position').innerText = `latitude : ${lat} , longitude : ${long} `;
+                let config = {
+                    headers: {'Access-Control-Allow-Origin': '*'}
+                };
+                /*
+                axios.get('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/2d3db2ae181d1563f927282faacd6e17/'+lat +',' + long)
+                .then(function (response) {   
+                    console.log(response.data)
+                    let temp = response.data.currently.temperature;
+                    let hum = response.data.currently.humidity; 
+                    document.getElementById('weather').innerText = 'Temperature : ' + temp + ' , Humidity : '  + hum;
+
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .finally(function () {
+                    // always executed
+                });
+                */
+               // call API
+                fetch('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/2d3db2ae181d1563f927282faacd6e17/'+lat +',' + long)
+                .then(response => response.json() )
+                .then(data => {
+                    console.log()
+                    let temp = data.currently.temperature;
+                    let hum = data.currently.humidity; 
+                    document.getElementById('weather').innerText = 'Temperature : ' + temp + ' , Humidity : '  + hum;
+                })
+            });
+        };
+
+        getVal();
+        
+
+    </script>
+</body>
+</html>
